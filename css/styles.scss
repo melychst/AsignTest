@@ -1,0 +1,14 @@
+body {
+	background-color: #cccccc;
+}
+.pagination {
+	a {
+		display: inline-block;
+		padding: 0px 5px;
+		margin: 0px 10px;
+
+	}
+	a.active {
+		color:red;
+	}
+}
