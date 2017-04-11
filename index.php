@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once("function.php");
 
 if ( $_FILES ) {
@@ -10,9 +10,31 @@ if ( $_FILES ) {
 }
 
 if ( (isset($_GET['page']) && ($_GET['page'] != 1) ) ) {
-		$page = $_GET['page'] - 1;
+	$page = $_GET['page'] - 1;
 } else {
 	$page = 0;
+}
+
+if ( isset($_GET['order_type']) ) {
+	$_SESSION['order'] = true;
+	$_SESSION['order_field'] = $_GET['order_field'];
+	$_SESSION['order_type'] = $_GET['order_type'];
+
+	$fieldName = $_GET['order_field'];
+	if ( $_GET['order_type'] == 'ASC' ) {
+		$orderType = 'DESC';
+	} else {
+		$orderType = 'ASC';
+	}
+} else {
+		$orderType = 'DESC';
+}
+
+if (($_GET['clean_sort'] == true ) || ($_SESSION['order'] == false)) {
+	$_SESSION['order'] = false;
+	$displayBlockOption = 'none';
+} else {
+	$displayBlockOption = 'block';
 }
 
 /*	
@@ -53,13 +75,18 @@ if ( (isset($_GET['page']) && ($_GET['page'] != 1) ) ) {
 		<div class="row">
 			<div class="col-md-12">
 			<h1>Users</h1>
+			<div class="sort-option-block" style="display: <?php echo $displayBlockOption; ?>">
+				<p class="sort-option">Поле сортування: <?php echo  $_SESSION['order_field'] ?></p>
+				<p class="sort-option">Спосіб сортування: <?php echo  $_SESSION['order_type'] ?></p>
+				<a class="btn btn-default" href="/?clean_sort=true">Очистити  ссортування</a>
+			</div>
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<td>№п/п</td>
-							<td>Ім'я</td>
-							<td>Прізвище</td>
-							<td>Дата нар</td>
+							<td><?php echo "<a href='/?order_field=firstname&order_type=".$orderType."'>"?>Ім'я</td>
+							<td><?php echo "<a href='/?order_field=lastname&order_type=".$orderType."'>"?>Прізвище</td>
+							<td><?php echo "<a href='/?order_field=born&order_type=".$orderType."'>"?>Дата нар</td>
 							<td>Стать</td>
 							<td>Область</td>
 							<td>Місто</td>
@@ -72,7 +99,7 @@ if ( (isset($_GET['page']) && ($_GET['page'] != 1) ) ) {
 					</thead>
 					<tbody>
 					<?php 
-						$users = get_users( $page ); 
+						$users = get_users( $page, $order, $orderType, $fieldName ); 
 							if ( $users ) {
 								$i=1;
 								foreach ($users as $keyUser => $user) {

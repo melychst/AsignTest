@@ -1,36 +1,37 @@
 <?php
-	$user = 'root';
-	$pass = "";
-	$dataBase = "asigntest";
+
+	define("USER_NAME", "root");
+	define("PASSWORD", "");
+	define("DB_NAME", "asigntest");
 
 	$arrVocablary = array( 'Cтать', 'Область', 'Місто', 'Хоббі', 'Компанія', 'Посада', 'Cтатус');
 	$arrTables = array('users', 'vocablary', 'data_vocablary', 'relationship');
 
-	$db = mysql_connect('localhost', $user, $pass);
-	$db_selected = mysql_select_db($dataBase, $db);
+	$db = mysql_connect('localhost', USER_NAME, PASSWORD);
+	$db_selected = mysql_select_db(DB_NAME, $db);
 
 
 	foreach ($arrTables as $value) {
 		switch ($value) {
 			case 'users':
-				if ( !checkTable($dataBase, $value) ) {
+				if ( !checkTable(DB_NAME, $value) ) {
 					createUsersTable($value);
 				}
 				break;
 			case 'vocablary':
-				if ( !checkTable($dataBase, $value) ) {
+				if ( !checkTable(DB_NAME, $value) ) {
 					createVocablaryTable($value, $arrVocablary);
 				}	
 				break;
 
 			case 'data_vocablary':
-				if ( !checkTable($dataBase, $value) ) {
+				if ( !checkTable(DB_NAME, $value) ) {
 					createDataVocablaryTable($value);
 				}	
 				break;
 
 			case 'relationship':
-				if ( !checkTable($dataBase, $value) ) {
+				if ( !checkTable(DB_NAME, $value) ) {
 					createRelationshipTable($value);
 				}	
 				break;

@@ -8,4 +8,10 @@ body {
 .pagination a.active {
   color: red; }
 
+.sort-option-block {
+  margin: 20px 0px; }
+
+.form .btn-default {
+  margin: 15px 0; }
+
 /*# sourceMappingURL=styles.css.map */

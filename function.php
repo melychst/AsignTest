@@ -106,12 +106,20 @@ function insert_row_to_relationship($userID, $dataID) {
 }
 
 
-function get_users( $page ) {
+function get_users( $page, $order, $orderType, $fieldName ) {
 		$users = array();
 		$relationship = array();
 		$temparr = array();
 		$rowFrom = $page*5;
-		$sqlUsers = "SELECT * FROM users LIMIT ".$rowFrom.",5";
+
+	if ( $_SESSION['order'] == true ) {
+			$sqlUsers = "SELECT * FROM users ORDER BY ".$_SESSION['order_field']. " ".$_SESSION['order_type']." LIMIT ".$rowFrom.",5";
+		} else {
+			$sqlUsers = "SELECT * FROM users LIMIT ".$rowFrom.",5";
+		}
+
+		
+
 		$resUsers = mysql_query($sqlUsers);
 	
 		while ( $resUser = mysql_fetch_assoc($resUsers) ) {
